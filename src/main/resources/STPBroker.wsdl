@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:types="urn://sc.voskhod.ru/soap-adapter-service/types/1.0" xmlns:tns="urn://sc.voskhod.ru/soap-adapter-service/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" targetNamespace="urn://sc.voskhod.ru/soap-adapter-service/1.0">
+<wsdl:documentation>
+        Веб-сервис SOAP интеграции СЦ с внешними СТП.
+    </wsdl:documentation>
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:types="urn://sc.voskhod.ru/soap-adapter-service/types/1.0" xmlns:tns="urn://sc.voskhod.ru/soap-adapter-service/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+            
+  <xs:import namespace="urn://sc.voskhod.ru/soap-adapter-service/types/1.0" schemaLocation="soap-adapter-types-1.0.xsd"/>
+        
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetTaskEventListResponseMsg">
+    <wsdl:part element="types:GetTaskEventListResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="STPBrokerException">
+    <wsdl:part element="types:STPBrokerFault" name="fault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTasksListRequestMsg">
+    <wsdl:part element="types:GetTasksListRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetCurrentTaskStatusesRequestMsg">
+    <wsdl:part element="types:GetCurrentTaskStatusesRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AckEventPackageRequestMsg">
+    <wsdl:part element="types:AckEventPackageRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DevTestResponseMsg">
+    <wsdl:part element="types:DevTestResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendEventsException">
+    <wsdl:part element="types:SendEventsFault" name="fault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendEventsResponseMsg">
+    <wsdl:part element="types:SendEventsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTaskEventListRequestMsg">
+    <wsdl:part element="types:GetTaskEventListRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AckEventPackageResponseMsg">
+    <wsdl:part element="types:AckEventPackageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DevTestRequestMsg">
+    <wsdl:part element="types:DevTestRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CreateTasksRequestMsg">
+    <wsdl:part element="types:CreateTasksRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetCurrentTaskStatusesResponseMsg">
+    <wsdl:part element="types:GetCurrentTaskStatusesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTasksListResponseMsg">
+    <wsdl:part element="types:GetTasksListResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CreateTasksResponseMsg">
+    <wsdl:part element="types:CreateTasksResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendEventsRequestMsg">
+    <wsdl:part element="types:SendEventsRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="STPBrokerPortType">
+    <wsdl:operation name="GetTasksList">
+      <wsdl:input message="tns:GetTasksListRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:GetTasksListResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentTaskStatuses">
+      <wsdl:input message="tns:GetCurrentTaskStatusesRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:GetCurrentTaskStatusesResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskEventLists">
+      <wsdl:input message="tns:GetTaskEventListRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:GetTaskEventListResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendEvents">
+      <wsdl:input message="tns:SendEventsRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:SendEventsResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:SendEventsException" name="SendEventsException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTasks">
+      <wsdl:input message="tns:CreateTasksRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:CreateTasksResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AckEventPackage">
+      <wsdl:input message="tns:AckEventPackageRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:AckEventPackageResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DevTest">
+      <wsdl:input message="tns:DevTestRequestMsg">
+    </wsdl:input>
+      <wsdl:output message="tns:DevTestResponseMsg">
+    </wsdl:output>
+      <wsdl:fault message="tns:STPBrokerException" name="STPBrokerException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="STPBrokerSoap11Binding" type="tns:STPBrokerPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetTasksList">
+      <soap:operation soapAction="urn:GetTasksList"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentTaskStatuses">
+      <soap:operation soapAction="urn:GetCurrentTaskStatuses"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskEventLists">
+      <soap:operation soapAction="urn:GetTaskEventLists"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendEvents">
+      <soap:operation soapAction="urn:SendEvents"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTasks">
+      <soap:operation soapAction="urn:CreateTasks"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AckEventPackage">
+      <soap:operation soapAction="urn:AckEventPackage"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DevTest">
+      <soap:operation soapAction="urn:AckEventPackage"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="STPBrokerException">
+        <soap:fault name="STPBrokerException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="STPBroker">
+    <wsdl:port binding="tns:STPBrokerSoap11Binding" name="STPBrokerEndpoint">
+<wsdl:documentation>
+                <wsi:Claim conformsTo="http://ws-i.org/profiles/basic/1.1"/>
+            </wsdl:documentation>
+      <soap:address location="https://sc-int.minsvyaz.ru:443/STPBroker/1.0"/>
+    </wsdl:port>
+  </wsdl:service>
+    <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+        <jaxws:package name="ru.voskhod.sc.soap_adapter.service.generated.service.v1_0"/>
+    </jaxws:bindings>
+</wsdl:definitions>

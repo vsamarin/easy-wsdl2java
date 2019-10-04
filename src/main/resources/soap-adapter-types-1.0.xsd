@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8'?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://sc.voskhod.ru/soap-adapter-service/types/1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:basic="urn://sc.voskhod.ru/soap-adapter-service/basic/1.0" attributeFormDefault="unqualified" elementFormDefault="qualified" jxb:version="2.0" targetNamespace="urn://sc.voskhod.ru/soap-adapter-service/types/1.0">
+
+    <xs:annotation>
+        <xs:documentation>
+            Типы и элементы для веб-сервиса.
+        </xs:documentation>
+        <xs:appinfo>
+            <jxb:schemaBindings>
+                <jxb:package name="ru.voskhod.sc.soap_adapter.service.generated.types.v1_0"/>
+            </jxb:schemaBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:import namespace="urn://sc.voskhod.ru/soap-adapter-service/basic/1.0" schemaLocation="soap-adapter-basic-1.0.xsd"/>
+
+    <xs:element name="GetTasksListRequest" type="tns:GetTasksListRequestType"/>
+    <xs:element name="GetTasksListResponse" type="tns:GetTasksListResponseType"/>
+    <xs:element name="GetCurrentTaskStatusesRequest" type="tns:TaskListRequestType"/>
+    <xs:element name="GetCurrentTaskStatusesResponse" type="tns:GetCurrentTaskStatusesResponseType"/>
+    <!--<xs:element name="GetTaskEventListRequest" type="tns:TaskListRequestType"/>-->
+    <xs:element name="GetTaskEventListRequest" type="tns:GetTaskEventListRequestType"/>
+    <xs:element name="GetTaskEventListResponse" type="tns:GetTaskEventListResponseType"/>
+    <xs:element name="SendEventsRequest" type="tns:SendEventsRequestType"/>
+    <xs:element name="SendEventsResponse" type="tns:SendEventsResponseType"/>
+    <xs:element name="CreateTasksRequest" type="tns:CreateTasksRequestType"/>
+    <xs:element name="CreateTasksResponse" type="tns:CreateTasksResponseType"/>
+    <xs:element name="AckEventPackageRequest" type="tns:AckEventPackageRequestType"/>
+    <xs:element name="AckEventPackageResponse" type="tns:AckEventPackageResponseType"/>
+
+
+    <xs:element name="DevTestRequest" type="tns:DevTestRequestType"/>
+    <xs:element name="DevTestResponse" type="tns:DevTestResponseType"/>
+
+
+
+    <xs:element name="STPBrokerFault" type="basic:STPBrokerFaultType"/>
+    <xs:element name="SendEventsFault" type="tns:SendEventsResponseType"/>
+
+    <xs:complexType name="GetTasksListRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+                    <xs:element name="role">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="INITIATOR"/>
+                                <xs:enumeration value="EXECUTOR"/>
+                                <xs:enumeration value="ALL"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="beginDate" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, содержащий дату в формате yyyy-MM-dd или дату со временем в формате yyyy-MM-dd'T'HH:mm:ss,
+                                позволяющий выдавать список запросов с отсечением по дате.
+                                Служит для оптимизации запросов по времени их исполнения и получения информации не за все прошлое,
+                                а с даты большей либо равной чем указанной в параметре.
+
+                                Если указан параметр changed=true, то в списке изменившихся задач выдаются только те, event-ы которых
+                                изменились, начиная с указанной даты.
+
+                                Если указан параметр onlyClosed=true, то в списке задач указывают только те задачи, last_modification_date
+                                которых более указанной даты.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="endDate" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, содержащий дату в формате yyyy-MM-dd или дату со временем в формате yyyy-MM-dd'T'HH:mm:ss,
+                                позволяющий выдавать список запросов с отсечением по дате.
+                                Служит для оптимизации запросов по времени их исполнения и получения информации только до указанной в параметре даты.
+
+                                Если указан параметр changed=true, то в списке изменившихся задач выдаются только те, event-ы которых
+                                изменились до указанной даты включительно.
+
+                                Если указан параметр onlyClosed=true, то в списке задач указывают только те задачи, last_modification_date меньше
+                                или равен указанной дате.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element maxOccurs="1" minOccurs="0" name="includeClosed" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, если true, то выдается список не только измененных открытых задач, но и закрытых измененных.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="onlyClosed" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, если true, то выдается список только закрытых задач.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element maxOccurs="1" minOccurs="1" name="changed" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Флаг регулирующий фильтрацию по статусу задач:
+                                changed = true - задачи изменившиется с момента последнего обращения к методу GetTaskEventListRequest для данного VisitorId
+                                и подтвержденные методом AckEventPackageRequest
+                                changed = false - все задачи для текущего VisitorId
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element default="false" minOccurs="0" name="skipOwnChanges" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="GetTasksListResponseType">
+        <xs:choice>
+            <xs:sequence>
+                <xs:element name="tasks" type="basic:TaskIdsListType"/>
+            </xs:sequence>
+            <xs:sequence>
+                <xs:element name="initiator" type="basic:TaskIdsListType"/>
+                <xs:element name="executor" type="basic:TaskIdsListType"/>
+            </xs:sequence>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="GetTaskEventListRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+                    <xs:element default="false" minOccurs="0" name="skipOwnChanges" type="xs:boolean"/>
+
+                    <xs:element default="false" maxOccurs="1" minOccurs="0" name="useLinksForBigBinaryContent" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, если true, большие файлы не передаются в ответе, вместо них предоставляется
+                                ссылка на файл в хранилище файлов для скачивания
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element default="20" maxOccurs="1" minOccurs="0" name="minFileSizeByLink" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Если useLinksForBigBinaryContent = true, то
+                                минимальный размер прикрепленного файла в мегабайтах, после которого файл не передается через ответ SOAP,
+                                а предоставляется ссылка на ссылка на файл в хранилище файлов для скачивания
+                                Если useLinksForBigBinaryContent = false, то этот параметр игнорируется
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element maxOccurs="1" minOccurs="0" name="skipUserChanges" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Идентификатор пользователя, чьи изменения будут отфильтрованы и не будут присутствовать в результатах поиска.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element name="Tasks" type="basic:TaskIdsListType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TaskListRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+                    <xs:element name="Tasks" type="basic:TaskIdsListType"/>
+                    <xs:element default="false" maxOccurs="1" minOccurs="0" name="useLinksForBigBinaryContent" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, если true, большие файлы не передаются в ответе, вместо них предоставляется
+                                ссылка на файл в хранилище файлов для скачивания
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element default="20" maxOccurs="1" minOccurs="0" name="minFileSizeByLink" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Если useLinksForBigBinaryContent = true, то
+                                минимальный размер прикрепленного файла в мегабайтах, после которого файл не передается через ответ SOAP,
+                                а предоставляется ссылка на ссылка на файл в хранилище файлов для скачивания
+                                Если useLinksForBigBinaryContent = false, то этот параметр игнорируется
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                </xs:sequence>
+                <!--<xs:element name="single"-->
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="GetCurrentTaskStatusesResponseType">
+        <xs:sequence>
+            <xs:element name="Tasks">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="Task" type="basic:TaskDescriptorType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetTaskEventListResponseType">
+        <xs:sequence>
+            <xs:element name="Tasks">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="Task" type="basic:TaskDatedEventListType"/>
+                            <!--<xs:element name="Task" type="basic:TaskEventListType" maxOccurs="unbounded"/>-->
+                        </xs:sequence>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SendEventsRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+                    <xs:element name="Tasks">
+                        <xs:complexType>
+                            <xs:choice>
+                                <xs:sequence>
+                                    <xs:element maxOccurs="unbounded" name="Task" type="basic:EventCreateType"/>
+                                </xs:sequence>
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SendEventsResponseType">
+        <xs:sequence>
+            <xs:element name="ProblemEvents">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="Event" type="basic:EventProblem"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CreateTasksRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+
+                    <xs:element default="false" maxOccurs="1" minOccurs="0" name="useLinksForBigBinaryContent" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Необязательный флаг, если true, большие файлы не передаются в ответе, вместо них предоставляется
+                                ссылка на файл в хранилище файлов для скачивания
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element default="20" maxOccurs="1" minOccurs="0" name="minFileSizeByLink" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Если useLinksForBigBinaryContent = true, то
+                                минимальный размер прикрепленного файла в мегабайтах, после которого файл не передается через ответ SOAP,
+                                а предоставляется ссылка на ссылка на файл в хранилище файлов для скачивания
+                                Если useLinksForBigBinaryContent = false, то этот параметр игнорируется
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+
+                    <xs:element name="Tasks">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Task" type="basic:TaskDescriptorType"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CreateTasksResponseType">
+        <xs:complexContent>
+            <xs:extension base="basic:TaskResponceType">
+                <xs:sequence>
+                    <xs:element name="Tasks">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Task" type="basic:TaskResponceType"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AckEventPackageRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+                    <xs:element maxOccurs="1" minOccurs="1" name="packageId" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AckEventPackageResponseType">
+        <xs:sequence>
+            <xs:element name="totalUpdated" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DevTestRequestType">
+        <xs:complexContent>
+            <xs:extension base="basic:RequestType">
+                <xs:sequence>
+                    <xs:element maxOccurs="1" minOccurs="0" name="packageId" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DevTestResponseType">
+        <xs:sequence>
+            <xs:element name="totalUpdated" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

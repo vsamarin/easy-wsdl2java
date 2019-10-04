@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8'?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://sc.voskhod.ru/soap-adapter-service/basic/1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" attributeFormDefault="unqualified" elementFormDefault="qualified" jxb:version="2.0" targetNamespace="urn://sc.voskhod.ru/soap-adapter-service/basic/1.0">
+
+    <xs:annotation>
+        <xs:documentation>Базовые типы.</xs:documentation>
+        <xs:appinfo>
+            <jxb:schemaBindings>
+                <jxb:package name="ru.voskhod.sc.soap_adapter.service.generated.basic.v1_0"/>
+            </jxb:schemaBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:complexType name="RequestType">
+        <xs:sequence>
+            <xs:element name="Header">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AccessKey" type="xs:string"/>
+                        <xs:element name="VisitorId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TaskIdsListType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Tasks" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EventType">
+        <xs:sequence>
+            <xs:element name="Id" type="xs:string"/>
+            <xs:element name="Date" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EventProblem">
+        <xs:sequence>
+            <xs:element name="eventId" type="xs:string"/>
+            <xs:element name="error" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TaskResponceType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="externalId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TaskDescriptorType">
+        <xs:sequence>
+            <xs:element name="Attributes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="Attribute">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Name" type="xs:string"/>
+                                    <xs:element name="Value" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="Comments">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="Comment">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Datetime" type="xs:dateTime"/>
+                                    <xs:element name="Author" type="xs:string"/>
+                                    <xs:element name="Text" type="xs:string"/>
+                                    <xs:element name="Private" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="Files">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="File">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Date" type="xs:date"/>
+                                    <xs:choice maxOccurs="1" minOccurs="1">
+                                        <xs:element name="Reference" type="xs:string"/>
+                                        <!--<xs:element name="BinaryContent" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>-->
+                                        <xs:element name="BinaryContent" type="xs:base64Binary"/>
+                                        <xs:element name="BinaryContentLink" type="xs:string"/>
+                                        <xs:element name="Title" type="xs:string"/>
+                                        <xs:element name="MimeType" type="xs:string"/>
+                                    </xs:choice>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string"/>
+        <!--<xs:attribute name="agreement" type="xs:string"/>-->
+        <!--<xs:attribute name="service" type="xs:string"/>-->
+        <!--<xs:attribute name="metaClass" type="xs:string"/>-->
+    </xs:complexType>
+
+    <xs:complexType name="EventCreateType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="ChangeAttributeEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:sequence>
+                                <xs:element name="Name" type="xs:string"/>
+                                <xs:element name="Value" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddFileEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:choice maxOccurs="1" minOccurs="1">
+                                <xs:element name="Reference" type="xs:string"/>
+                                <!--<xs:element name="BinaryContent" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>-->
+                                <xs:element name="BinaryContent" type="xs:base64Binary"/>
+                                <xs:element name="BinaryContentLink" type="xs:string"/>
+                                <xs:element name="Title" type="xs:string"/>
+                                <xs:element name="MimeType" type="xs:string"/>
+                            </xs:choice>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddCommentEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:sequence>
+                                <xs:element name="Text" type="xs:string"/>
+                                <xs:element name="Private" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="EventGetType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="ChangeAttributeEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:sequence>
+                                <xs:element name="Name" type="xs:string"/>
+                                <xs:element name="Value" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddFileEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:choice maxOccurs="1" minOccurs="1">
+                                <xs:element name="Reference" type="xs:string"/>
+                                <xs:element name="BinaryContent" type="xs:base64Binary"/>
+                                <xs:element name="BinaryContentLink" type="xs:string"/>
+                                <xs:element name="Title" type="xs:string"/>
+                                <xs:element name="MimeType" type="xs:string"/>
+                            </xs:choice>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddCommentEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:sequence>
+                                <xs:element name="Text" type="xs:string"/>
+                                <xs:element name="Author" type="xs:string"/>
+                                <xs:element name="Private" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CommonEvent">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:EventType">
+                            <xs:sequence>
+                                <xs:element name="Category" type="xs:string"/>
+                                <xs:element name="Message" type="xs:string"/>
+                                <xs:element name="Author" type="xs:string"/>
+                                <xs:element name="Datetime" type="xs:dateTime"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="TaskDatedEventListType">
+        <xs:complexContent>
+            <xs:extension base="tns:EventGetType">
+                <xs:attribute name="LastRequestDate" type="xs:dateTime"/>
+                <xs:attribute name="packageId" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="STPBrokerFaultType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="faultCode" type="xs:string"/>
+            <xs:element minOccurs="0" name="faultString" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
